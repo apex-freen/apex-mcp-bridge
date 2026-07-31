@@ -10,7 +10,6 @@
   <img src="https://img.shields.io/badge/rust--核心-✓-DEA584?logo=rust&style=flat-square" alt="Rust">
   <img src="https://img.shields.io/badge/docker-✓-2496ED?logo=docker&style=flat-square" alt="Docker">
   <img src="https://img.shields.io/badge/MCP-2026.07-6c5ce7?style=flat-square" alt="MCP 协议">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="许可证">
 </p>
 
 # Apex MCP Bridge
@@ -344,12 +343,6 @@ docker-compose up -d
 Rust 核心经过高度优化且非常轻量——正常负载下仅使用约 30-50 MB 内存。在树莓派 4B 上，每秒可处理数百次 MCP 工具调用。对于更大规模的部署（数千台设备），您可以运行多台 Bridge 实例共享配置。
 
 </details>
-
----
-
-## 📄 许可证
-
-MIT 许可证。详情请参阅 `LICENSE` 文件。
 
 ---
 

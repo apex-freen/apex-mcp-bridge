@@ -10,7 +10,6 @@
   <img src="https://img.shields.io/badge/rust--core-✓-DEA584?logo=rust&style=flat-square" alt="Rust">
   <img src="https://img.shields.io/badge/docker-✓-2496ED?logo=docker&style=flat-square" alt="Docker">
   <img src="https://img.shields.io/badge/MCP-2026.07-6c5ce7?style=flat-square" alt="MCP Protocol">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
 </p>
 
 # Apex MCP Bridge
@@ -344,12 +343,6 @@ A single Apex MCP Bridge instance comfortably handles:
 The Rust core is highly optimized and lightweight — it uses roughly 30-50 MB of RAM under normal load. On a Raspberry Pi 4B, it can process hundreds of MCP tool calls per second. For larger deployments (thousands of devices), you can run multiple Bridge instances with a shared configuration.
 
 </details>
-
----
-
-## 📄 License
-
-MIT License. See `LICENSE` for details.
 
 ---
 
