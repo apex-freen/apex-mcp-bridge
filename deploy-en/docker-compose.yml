@@ -1,0 +1,62 @@
+services:
+  apex-mcp-bridge:
+    image: apexf/apex_mcp_bridge:latest
+    container_name: apex-mcp-bridge
+    hostname: apex-mcp-bridge
+    restart: unless-stopped
+    
+    # Port mapping
+    ports:
+      - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
+    
+    # Startup dependency: wait for MariaDB health check
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    
+    environment:
+      # Server port (default 8018, avoid port 80 conflict)
+      - SERVER_PORT=${SERVER_PORT:-8018}
+      
+      # Database (bridge network, access via service name "mariadb")
+      - DATABASE_URL=mysql://${MARIADB_USER:-apex_remote}:${MARIADB_PASSWORD:-Apex1234}@mariadb:3306/apex_db
+      
+      # JWT (auto-generated on first startup, no manual setup needed)
+      - JWT_SECRET=${JWT_SECRET:-}
+      
+      # Container mode
+      - RUNNING_IN_DOCKER=true
+      # Host info (hostname or IP, used for token signing)
+      - HOST_HOSTNAME=${HOSTNAME:-}
+    
+    volumes:
+      # Logs
+      - ./data/logs:/app/logs
+      # Uploaded files
+      - ./data/uploads:/app/uploads
+      # Plugins
+      - ./data/service-plugins:/app/service_plugins
+      # Plugin Python dependencies
+      - ./data/plugins-venv:/app/.plugins-venv
+
+  # ============== Built-in MariaDB ==============
+  mariadb:
+    image: mariadb:11
+    container_name: apex-mcp-bridge-mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-Apex1234}
+      MARIADB_DATABASE: apex_db
+      MARIADB_USER: ${MARIADB_USER:-apex_remote}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-Apex1234}
+      MARIADB_ROOT_HOST: '%'
+      MARIADB_CHARACTER_SET: utf8mb4
+      MARIADB_COLLATE: utf8mb4_unicode_ci
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
