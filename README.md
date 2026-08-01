@@ -43,6 +43,20 @@ Deployed via Docker, it runs on any Docker-capable device (NAS, servers, Raspber
 
 ---
 
+## 🧠 Core Philosophy: Brain vs. Hand, Zero-Trust Architecture
+
+**In one sentence: Agents think, Bridge acts, Humans authorize.**
+
+| Role | Responsibility | Has | Does NOT have |
+|:---:|---|---|---|
+| 🤖 Agent | Generates intent | Brain (reasoning) | Any keys or permissions |
+| ✋ Bridge | Validate + Execute + Audit | Device & service control | Brain (never decides on its own) |
+| 👤 Human | Defines authorization boundaries | Final decision authority | — |
+
+> **Zero-trust principle**: Validate first, execute second, audit everything. Trust no agent by default.
+
+---
+
 ## ✨ Why Apex MCP Bridge
 
 > AI agents learned to act, but no one installed a **safety gate** for them. Apex MCP Bridge is that gate.
