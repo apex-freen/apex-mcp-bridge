@@ -94,44 +94,49 @@ Apex MCP Bridge 提供了：
 
 ## 🚀 快速开始
 
+本项目基于纯 Docker 部署，**零配置、一条命令即可启动**。
+
 ### 前置条件
 
 - 任意支持 Docker 的设备（NAS、服务器、树莓派、PC 均可）
 - 已安装 Docker 和 Docker Compose
-- 端口 `8018`（Web 管理后台 + MCP）和 `1883`（MQTT）未被占用
 
-### 一条命令部署
+### 部署
+
+只需三步：
 
 ```bash
-# 1. 创建项目目录
+# 1. 创建目录并进入
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
 
-# 2. 创建 docker-compose.yml（从仓库复制）
-#    参考本仓库中的 docker-compose.yml
+# 2. 复制 docker-compose.yml 到当前目录（可直接从本仓库根目录获取）
 
-# 3. 启动服务
-docker-compose up -d
+# 3. 启动
+docker compose up -d
 ```
 
-等待 1-3 分钟让镜像拉取和容器启动完成。通过以下命令验证：
+等待 1-3 分钟让镜像拉取和容器启动完成。
 
-```bash
-docker-compose ps
-# apex-mcp-bridge 和 apex-mcp-bridge-mariadb 两个容器均为 Up 状态即为成功
-```
+### 访问
 
-### 部署后配置
+打开浏览器访问：`http://<设备IP>:8018`
 
-1. **设置 HOST_HOSTNAME**：编辑 `docker-compose.yml`，将 `HOST_HOSTNAME` 设置为设备的局域网 IP（如 `192.168.1.100`）——这是智能体回调地址和设备注册路由所必需的。修改后重启容器：`docker-compose up -d`
+🖼️ **截图占位**：登录页面和登录成功后的管理后台。
+<!-- 替换为：<img src="docs/screenshots/login-and-dashboard.png" alt="登录页与仪表盘"> -->
 
-2. **防火墙**：放行 `8018/tcp` 和 `1883/tcp` 端口
+---
 
-3. **登录**：在浏览器中打开 `http://<你的IP>:8018`。使用默认管理员账号登录——**首次登录后请立即修改密码**。
+### 可选：进阶配置
 
-   🖼️ **截图占位**：登录页面和登录成功后的管理后台。
-   <!-- 替换为：<img src="docs/screenshots/login-and-dashboard.png" alt="登录页与仪表盘"> -->
+以下配置并非部署必需，按需调整即可：
 
-### 五步配置流程
+| 配置项 | 说明 |
+|---|---|
+| **HOST_HOSTNAME** | 编辑 `docker-compose.yml`，设置为设备的局域网 IP（如 `192.168.1.100`），用于智能体回调和设备注册路由。修改后重启：`docker compose up -d` |
+| **防火墙** | 如需跨设备访问，放行 `8018/tcp`（Web/MCP）和 `1883/tcp`（MQTT）端口 |
+| **修改默认密码** | 登录后请立即修改默认管理员密码 |
+
+### 系统使用流程
 
 ```
 1. 创建用户          → 用户管理
