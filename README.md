@@ -229,7 +229,9 @@ Plugins translate any network service into MCP tools. Example: SMB file plugin.
 
 ## ⚠️ Security Notice
 
-- **Default password**: The default database password `Apex1234` is for evaluation only. For production or public-facing deployments, **always change** `MARIADB_ROOT_PASSWORD` and `MARIADB_PASSWORD` to strong passwords.
+- **Initial password security**: Both the database password and admin password are set to simple defaults for quick evaluation only. **Please change the following passwords immediately after first deployment to increase password complexity**:
+  - Database passwords: Modify `MARIADB_ROOT_PASSWORD` and `MARIADB_PASSWORD` in `docker-compose.yml` (restart containers after changes)
+  - Admin password: After logging into the admin dashboard, change the password for the `admin` user in User Management (current default: `admin123`)
 
 - **Plugin safety**: Plugins execute arbitrary Python code on your host. Only install plugins from the official repository or sources you fully trust. If you obtained a plugin from an unofficial channel and don't understand its code, **do not use it** — it may contain malicious logic.
 
