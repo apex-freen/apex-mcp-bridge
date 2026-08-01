@@ -94,24 +94,47 @@ Apex MCP Bridge provides:
 
 ## 🚀 Quick Start
 
-This project is based on pure Docker deployment — **zero configuration, one command to start**.
+This project is based on pure Docker deployment — all environments and dependencies are packaged in the image.
+
+### Ports
+
+| Port | Purpose |
+|---|---|
+| `8018` | Web Admin Dashboard + MCP Server endpoint |
+| `1883` | MQTT device access port |
 
 ### Prerequisites
 
 - Any Docker-capable device (NAS, server, Raspberry Pi, PC)
 - Docker & Docker Compose installed
+- Ensure the above ports are available
+- Firewall allows `8018/tcp` and `1883/tcp`
 
-### Deployment
+### Deployment Steps
 
-Just three steps:
+**Step 1: Prepare docker-compose.yml**
+
+Create a project directory and copy `docker-compose.yml` from the repository root:
 
 ```bash
-# 1. Create directory and enter
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
+# Copy docker-compose.yml to current directory
+```
 
-# 2. Copy docker-compose.yml to current directory (available from repo root)
+**Step 2: Configure HOST_HOSTNAME (Required)**
 
-# 3. Start
+Edit `docker-compose.yml`, find the `HOST_HOSTNAME` environment variable, and set it to your device's **LAN IP** or **hostname**:
+
+```yaml
+environment:
+  - HOST_HOSTNAME=192.168.1.100    # Change to your device LAN IP or hostname
+```
+
+> ⚠️ **This must be configured.** The system uses it to generate the MCP service address and device registration routing. Failure to configure will result in agents being unable to connect properly and devices failing to register.
+
+**Step 3: Start**
+
+```bash
 docker compose up -d
 ```
 
@@ -121,20 +144,14 @@ Wait 1-3 minutes for image pull and container startup.
 
 Open your browser and visit: `http://<DEVICE_IP>:8018`
 
+**Default credentials:**
+- Username: `admin`
+- Password: `admin123`
+
+> ⚠️ Please change the default password immediately after first login.
+
 🖼️ **SCREENSHOT PLACEHOLDER**: Login page and admin dashboard after successful login.
 <!-- Replace with: <img src="docs/screenshots/login-and-dashboard.png" alt="Login and Dashboard"> -->
-
----
-
-### Optional: Advanced Configuration
-
-The following are not required for deployment — adjust as needed:
-
-| Config | Description |
-|---|---|
-| **HOST_HOSTNAME** | Edit `docker-compose.yml`, set to your LAN IP (e.g. `192.168.1.100`), used for agent callbacks and device registration routing. Restart after change: `docker compose up -d` |
-| **Firewall** | If accessing across devices, open ports `8018/tcp` (Web/MCP) and `1883/tcp` (MQTT) |
-| **Change default password** | Please change the default admin password immediately after first login |
 
 ### System Setup Flow
 

@@ -8,7 +8,8 @@ services:
 
     # 端口映射
     ports:
-      - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
+      - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"  # Web 管理后台 + MCP Server 端点
+      - "1883:1883"                                     # MQTT 硬件设备接入端口
 
     # 启动依赖：等待 MariaDB 健康检查通过
     depends_on:
@@ -27,7 +28,7 @@ services:
 
       # 容器模式
       - RUNNING_IN_DOCKER=true
-      # 宿主机信息（hostname 或 IP，用于令牌签发等场景）
+      # ⚠️ 必须配置：宿主机 hostname 或局域网 IP，用于生成 MCP 服务地址和设备注册路由
       - HOST_HOSTNAME=${HOSTNAME:-}
 
     volumes:
