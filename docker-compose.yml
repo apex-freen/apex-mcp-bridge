@@ -9,6 +9,7 @@ services:
     # 端口映射
     ports:
       - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
+      - "${MQTT_PORT:-1883}:1883"
 
     # 启动依赖：等待 MariaDB 健康检查通过
     depends_on:
@@ -22,8 +23,10 @@ services:
       # 数据库（bridge 网络下通过服务名 mariadb 访问）
       - DATABASE_URL=mysql://${MARIADB_USER:-apex_remote}:${MARIADB_PASSWORD:-Apex1234}@mariadb:3306/apex_db
 
-      # JWT（首次启动自动生成随机密钥，无需手动设置）
+      # JWT（首次启动前必须配置）
       - JWT_SECRET=${JWT_SECRET:-}
+      # PyPI 镜像源（国内使用阿里云加速）
+      - PIP_INDEX_URL=${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple/}
 
       # 容器模式
       - RUNNING_IN_DOCKER=true
@@ -31,6 +34,8 @@ services:
       - HOST_HOSTNAME=${HOSTNAME:-}
 
     volumes:
+      # 配置（JWT_SECRET 等持久化）
+      - ./data/config:/app/config
       # 日志
       - ./data/logs:/app/logs
       # 上传文件

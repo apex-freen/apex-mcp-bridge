@@ -4,32 +4,35 @@ services:
     container_name: apex-mcp-bridge
     hostname: apex-mcp-bridge
     restart: unless-stopped
-    
+
     # Port mapping
     ports:
       - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
-    
+      - "${MQTT_PORT:-1883}:1883"
+
     # Startup dependency: wait for MariaDB health check
     depends_on:
       mariadb:
         condition: service_healthy
-    
+
     environment:
       # Server port (default 8018, avoid port 80 conflict)
       - SERVER_PORT=${SERVER_PORT:-8018}
-      
+
       # Database (bridge network, access via service name "mariadb")
       - DATABASE_URL=mysql://${MARIADB_USER:-apex_remote}:${MARIADB_PASSWORD:-Apex1234}@mariadb:3306/apex_db
-      
-      # JWT (auto-generated on first startup, no manual setup needed)
+
+      # JWT (must be configured before first startup)
       - JWT_SECRET=${JWT_SECRET:-}
-      
+
       # Container mode
       - RUNNING_IN_DOCKER=true
       # Host info (hostname or IP, used for token signing)
       - HOST_HOSTNAME=${HOSTNAME:-}
-    
+
     volumes:
+      # Config (JWT_SECRET persistence)
+      - ./data/config:/app/config
       # Logs
       - ./data/logs:/app/logs
       # Uploaded files
