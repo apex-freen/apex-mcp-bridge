@@ -1,48 +1,58 @@
 services:
   apex-mcp-bridge:
+    # ============================================================
+    # 镜像地址（二选一）
+    # ============================================================
+    # 国内用户：注释掉下面一行（国际镜像），并取消下一行注释（阿里云镜像加速）
+    # 国际用户：保持默认即可
     image: apexf/apex_mcp_bridge:latest
+    # image: crpi-qlruqqugcjs2bo3w.cn-shanghai.personal.cr.aliyuncs.com/apex_mcp_bridge/server:latest
     container_name: apex-mcp-bridge
     hostname: apex-mcp-bridge
     restart: unless-stopped
 
-    # Port mapping
+    # 端口映射
     ports:
       - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
       - "${MQTT_PORT:-1883}:1883"
 
-    # Startup dependency: wait for MariaDB health check
+    # 启动依赖：等待 MariaDB 健康检查通过
     depends_on:
       mariadb:
         condition: service_healthy
 
     environment:
-      # Server port (default 8018, avoid port 80 conflict)
+      # 服务器端口（默认 8018，避免与宿主机 80 冲突）
       - SERVER_PORT=${SERVER_PORT:-8018}
 
-      # Database (bridge network, access via service name "mariadb")
+      # 数据库（bridge 网络下通过服务名 mariadb 访问）
       - DATABASE_URL=mysql://${MARIADB_USER:-apex_remote}:${MARIADB_PASSWORD:-Apex1234}@mariadb:3306/apex_db
 
-      # JWT (must be configured before first startup)
+      # JWT 密钥（首次启动前必须配置，否则系统无法正常工作）
       - JWT_SECRET=${JWT_SECRET:-}
 
-      # Container mode
+      # PyPI 镜像源（国内用户请取消下面一行注释，使用阿里云加速插件依赖安装）
+      # - PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+
+      # 容器模式
       - RUNNING_IN_DOCKER=true
-      # Host info (hostname or IP, used for token signing)
+
+      # 宿主机信息（局域网 IP 或 hostname，用于令牌签发和设备注册路由，必须配置）
       - HOST_HOSTNAME=${HOSTNAME:-}
 
     volumes:
-      # Config (JWT_SECRET persistence)
+      # 配置（JWT_SECRET 等持久化）
       - ./data/config:/app/config
-      # Logs
+      # 日志
       - ./data/logs:/app/logs
-      # Uploaded files
+      # 上传文件
       - ./data/uploads:/app/uploads
-      # Plugins
+      # 插件目录（复制插件文件夹进来即自动加载）
       - ./data/service-plugins:/app/service_plugins
-      # Plugin Python dependencies
+      # 插件 Python 依赖
       - ./data/plugins-venv:/app/.plugins-venv
 
-  # ============== Built-in MariaDB ==============
+  # ============== 内置 MariaDB ==============
   mariadb:
     image: mariadb:11
     container_name: apex-mcp-bridge-mariadb

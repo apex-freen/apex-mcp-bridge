@@ -110,6 +110,15 @@ Apex MCP Bridge 提供了：
 
 本项目基于纯 Docker 部署，所有环境和依赖都已打包在镜像中。
 
+### 部署方式
+
+| 方式 | 推荐度 | 说明 |
+|---|---|---|
+| **Docker Compose** | ⭐ 推荐 | 标准部署方式，直接使用 `docker-compose.yml` |
+| **install.sh / ops.sh** | 占位（待优化） | 一键安装 + 运维脚本，暂不推荐使用 |
+
+> `install.sh` 和 `ops.sh` 脚本目前为占位版本，正在优化中，请优先使用下方的 Docker Compose 方式部署。
+
 ### 端口说明
 
 | 端口 | 用途 |
@@ -128,14 +137,14 @@ Apex MCP Bridge 提供了：
 
 **步骤 1：准备 docker-compose.yml**
 
-创建项目目录，从本仓库的 `deploy-cn/` 目录复制 `docker-compose.yml`：
+创建项目目录，从仓库根目录下载 `docker-compose.yml`：
 
 ```bash
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
-# 从仓库 deploy-cn/ 目录复制 docker-compose.yml 到当前目录
+curl -O https://gitee.com/freen/apex-mcp-bridge/raw/main/docker-compose.yml
 ```
 
-> 海外用户请使用 `deploy-en/` 目录中的版本。
+> **国内用户**：打开 `docker-compose.yml`，找到 `image:` 配置段，注释掉国际镜像行，取消注释阿里云镜像行以加速拉取。同时取消注释 `PIP_INDEX_URL` 行以加速插件依赖安装。
 
 **步骤 2：配置 JWT_SECRET（必需）**
 

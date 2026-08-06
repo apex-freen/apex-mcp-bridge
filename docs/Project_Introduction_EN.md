@@ -98,178 +98,15 @@ This is Apex MCP Bridge's unique capability that sets it apart from all existing
 
 ---
 
-## 3. Installation Guide (Docker Deployment)
+## 3. System Features and Usage
 
-### 3.1 Prerequisites
+> 📖 **Deployment & Operations**: This section focuses on system features and usage. For Docker deployment, configuration, firewall setup, and upgrade procedures, please refer to [README.md](../README.md) in the repository root.
 
-- A Docker-capable device (NAS, server, Raspberry Pi, PC all work)
-- Docker and Docker Compose installed
-- Ports `8018` (Web admin panel + MCP endpoint) and `1883` (MQTT device access) available
-
-### 3.2 Port Description
-
-| Port | Purpose | Notes |
-|---|---|---|
-| `1883` | Standard MQTT port | Hardware devices connect to Bridge via MQTT protocol |
-| `8018` | Application port | Web admin panel + MCP Server endpoint |
-
-### 3.3 Deployment Steps
-
-#### Step 1: Prepare docker-compose.yml
-
-Create `docker-compose.yml` in your working directory (e.g., `/path/to/apex-mcp-bridge`):
-
-```yaml
-services:
-  apex-mcp-bridge:
-    image: crpi-qlruqqugcjs2bo3w.cn-shanghai.personal.cr.aliyuncs.com/apex_mcp_bridge/server:latest
-    container_name: apex-mcp-bridge
-    hostname: apex-mcp-bridge
-    restart: unless-stopped
-    
-    # Port mapping
-    ports:
-      - "${SERVER_PORT:-8018}:${SERVER_PORT:-8018}"
-      - "1883:1883"
-    
-    # Startup dependency: wait for MariaDB health check to pass
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    
-    environment:
-      # Server port (default 8018, avoids conflict with host port 80)
-      - SERVER_PORT=${SERVER_PORT:-8018}
-      
-      # Database (accessed via service name "mariadb" on bridge network)
-      - DATABASE_URL=mysql://${MARIADB_USER:-apex_remote}:${MARIADB_PASSWORD:-Apex1234}@mariadb:3306/apex_db
-      
-      # JWT (auto-generated random key on first startup, no manual setup needed)
-      - JWT_SECRET=${JWT_SECRET:-}
-      
-      # Container mode
-      - RUNNING_IN_DOCKER=true
-      # Host machine info (hostname or IP, used for token issuance and other scenarios)
-      - HOST_HOSTNAME=${HOSTNAME:-}
-    
-    volumes:
-      # Logs
-      - ./data/logs:/app/logs
-      # Uploads
-      - ./data/uploads:/app/uploads
-      # Plugins
-      - ./data/service-plugins:/app/service_plugins
-      # Plugin dependencies
-      - ./data/plugins-venv:/app/.plugins-venv
-
-  # ============== Built-in MariaDB ==============
-  mariadb:
-    image: mariadb:11
-    container_name: apex-mcp-bridge-mariadb
-    restart: unless-stopped
-    environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-Apex1234}
-      MARIADB_DATABASE: apex_db
-      MARIADB_USER: ${MARIADB_USER:-apex_remote}
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-Apex1234}
-      MARIADB_ROOT_HOST: '%'
-      MARIADB_CHARACTER_SET: utf8mb4
-      MARIADB_COLLATE: utf8mb4_unicode_ci
-    volumes:
-      - ./data/mariadb:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
-```
-
-Core configuration notes:
-- **Service image**: Bridge service image hosted on Alibaba Cloud Container Registry
-- **Built-in MariaDB 11**: For data persistence, includes health checks; Bridge waits for database readiness before starting
-- **Port mapping**: `8018:8018` (Web/MCP), `1883:1883` (MQTT device access)
-- **Volume mounts**: Logs, uploads, plugins, plugin dependencies, and database data all persist to the host machine
-- **Environment variables**: All with defaults, works out of the box
-
-> ⚠️ **Security notice**: The default database password `Apex1234` is for evaluation only. It's sufficient for LAN environments, but if you plan to use it long-term or expose it to the public internet in the future, **always change** `MARIADB_ROOT_PASSWORD` and `MARIADB_PASSWORD` to strong passwords.
-
-#### Step 2: Firewall Configuration
-
-If your device has a firewall enabled, open the following ports:
-
-| Port | Protocol | Purpose |
-|---|---|---|
-| `8018` | TCP | Web admin panel + MCP Server endpoint |
-| `1883` | TCP | MQTT device access |
-
-Firewall configuration examples for different systems:
-
-**Linux (ufw):**
-```bash
-sudo ufw allow 8018/tcp
-sudo ufw allow 1883/tcp
-sudo ufw reload
-```
-
-**Linux (firewalld):**
-```bash
-sudo firewall-cmd --permanent --add-port=8018/tcp
-sudo firewall-cmd --permanent --add-port=1883/tcp
-sudo firewall-cmd --reload
-```
-
-**Windows Firewall**: Go to "Windows Defender Firewall with Advanced Security" → "Inbound Rules" → "New Rule", allow ports 8018 and 1883.
-
-#### Step 3: Start Services
-
-```bash
-cd /path/to/apex-mcp-bridge
-docker-compose up -d
-```
-
-Wait for the image to be pulled and containers to start (first run needs to download images, about 1-3 minutes, be patient).
-
-After startup, confirm container status with:
-
-```bash
-docker-compose ps
-```
-
-Both `apex-mcp-bridge` and `apex-mcp-bridge-mariadb` containers showing `Up` status indicates success.
-
-🖼️ **SCREENSHOT PLACEHOLDER**: Docker container status screenshot (showing both containers as Up)
-
-#### Step 4: Post-Deploy Configuration
-
-1. **Set HOST_HOSTNAME**:
-   - Edit `docker-compose.yml`, change the `HOST_HOSTNAME` environment variable to your device's LAN IP address (e.g., `192.168.1.100`)
-   - This parameter affects agent callback addresses and device registration routing, must be set to a LAN-accessible IP
-   - Restart containers after changes: `docker-compose up -d`
-
-   🖼️ **SCREENSHOT PLACEHOLDER**: Docker environment variable configuration (showing HOST_HOSTNAME set to LAN IP)
-
-2. **Confirm Port Mapping**:
-   - Ensure `1883` (MQTT) and `8018` (Web/MCP) ports are correctly mapped
-   - Check port mapping via NAS Docker management UI or `docker ps` command
-
-   🖼️ **SCREENSHOT PLACEHOLDER**: Docker port mapping configuration (showing 8018 and 1883 port mappings)
-
-#### Step 5: Login to Admin Panel
-
-Open your browser and visit `http://<YOUR_IP>:8018` to access the Web admin panel login page.
-
-🖼️ **SCREENSHOT PLACEHOLDER**: Browser address bar showing admin panel URL
-
-First-time login uses the default system admin account (**please change the password immediately after first login**).
-
-🖼️ **SCREENSHOT PLACEHOLDER**: Admin dashboard screenshot after successful login
-
-### 3.4 System Features Overview
+### 3.1 System Features Overview
 
 Apex MCP Bridge's core goal is: **Let authorized agents securely call devices and network services on your LAN via the MCP protocol.**
 
-围绕这个目标，系统的配置逻辑分为五步：
+Around this goal, the system configuration logic is divided into five steps:
 
 1. **Configure who**: Create users → User Management
 2. **Configure what**: Install plugins (network services → MCP tools) + Register devices (IoT hardware → MCP tools) → Plugin Management / Device Management
@@ -327,7 +164,7 @@ Apex MCP Bridge does five things:
 | **Plugin Extension** | SMB file management, MQTT device access… plugin-based, install on demand. Rapidly extend any network service based on seed plugins |
 | **Hardware Framework** | Provides **open-source** template framework (MIT) for consumer-grade chips (ESP32-S3, ESP32-C3), leveraging framework rules and constraints so AI agents can rapidly generate IoT device firmware based on your requirements, also enables retrofitting compatibility for traditional IoT chip devices |
 
-### 3.5 Plugin Installation
+### 3.2 Plugin Installation
 
 Plugins are modules that translate network services into MCP tools. Using the SMB file plugin as an example:
 
@@ -342,7 +179,7 @@ Plugins are modules that translate network services into MCP tools. Using the SM
 
    🖼️ **SCREENSHOT PLACEHOLDER**: Plugin list in admin panel after successful loading (showing plugin status as "Enabled", corresponding MCP tool list)
 
-### 3.6 Hardware Device Access
+### 3.3 Hardware Device Access
 
 1. Use the **open-source** ESP32-S3/C3 hardware framework templates, generate device firmware on demand through AI agents (such as TRAE):
    - ESP32-S3 firmware repo: <https://github.com/apex-freen/apex-mcp-esp32-s3-v6>
@@ -362,7 +199,7 @@ Plugins are modules that translate network services into MCP tools. Using the SM
 
    🖼️ **SCREENSHOT PLACEHOLDER**: Device details in admin panel (showing online status, capability list, supported MCP operations)
 
-### 3.7 Connect Agents
+### 3.4 Connect Agents
 
 In any MCP-compatible agent client (such as TRAE, WorkBuddy, Codex, Claude Code, Cursor, etc.), add an MCP Server with the address:
 

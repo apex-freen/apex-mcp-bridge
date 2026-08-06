@@ -24,7 +24,7 @@
   </kbd>
 </p>
 
-> � **中文文档 (Chinese)**: 完整的中文项目介绍请见 [README_ZH.md](./README_ZH.md) · 详细项目文档 [项目介绍.md](./项目介绍.md)
+> � **中文文档 (Chinese)**: 完整的中文项目介绍请见 [README_ZH.md](./README_ZH.md) · 详细项目文档 [项目介绍.md](./docs/项目介绍.md)
 
 **Apex MCP Bridge** is an AI-native edge hub that serves as the **core control layer** for AI agents to access the physical world. It connects all MCP-compatible agent clients (TRAE, WorkBuddy, Codex, Claude Code, Cursor, etc.) on one side, and all physical devices and network services (lights, speakers, robot dogs, NAS, printers, databases, ERPs, etc.) on the other — acting as a **unified MCP smart controller**.
 
@@ -110,6 +110,15 @@ Apex MCP Bridge provides:
 
 This project is based on pure Docker deployment — all environments and dependencies are packaged in the image.
 
+### Deployment Methods
+
+| Method | Recommendation | Description |
+|---|---|---|
+| **Docker Compose** | ⭐ Recommended | Standard deployment, directly use `docker-compose.yml` |
+| **install.sh / ops.sh** | Placeholder (pending optimization) | One-click install + ops scripts, not recommended yet |
+
+> The `install.sh` and `ops.sh` scripts are placeholders under active optimization. Please prefer the Docker Compose method below for now.
+
 ### Ports
 
 | Port | Purpose |
@@ -128,14 +137,14 @@ This project is based on pure Docker deployment — all environments and depende
 
 **Step 1: Prepare docker-compose.yml**
 
-Create a project directory and copy `docker-compose.yml` from the `deploy-en/` directory:
+Create a project directory and download `docker-compose.yml` from the repository root:
 
 ```bash
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
-# Copy docker-compose.yml from deploy-en/ directory to current directory
+curl -O https://raw.githubusercontent.com/apex-freen/apex-mcp-bridge/main/docker-compose.yml
 ```
 
-> Users in China should use the `deploy-cn/` version instead.
+> **Users in China**: Open `docker-compose.yml` and find the `image:` section. Comment out the international image line and uncomment the Alibaba Cloud image line to accelerate pulling. Also uncomment the `PIP_INDEX_URL` line to accelerate plugin dependency installation.
 
 **Step 2: Configure JWT_SECRET (Required)**
 
