@@ -128,14 +128,27 @@ This project is based on pure Docker deployment — all environments and depende
 
 **Step 1: Prepare docker-compose.yml**
 
-Create a project directory and copy `docker-compose.yml` from the repository root:
+Create a project directory and copy `docker-compose.yml` from the `deploy-en/` directory:
 
 ```bash
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
-# Copy docker-compose.yml to current directory
+# Copy docker-compose.yml from deploy-en/ directory to current directory
 ```
 
-**Step 2: Configure HOST_HOSTNAME (Required)**
+> Users in China should use the `deploy-cn/` version instead.
+
+**Step 2: Configure JWT_SECRET (Required)**
+
+Edit `docker-compose.yml`, find the `JWT_SECRET` environment variable, and set a random secret key:
+
+```yaml
+environment:
+  - JWT_SECRET=your-random-secret-key-here    # Must be configured before first startup
+```
+
+> ⚠️ **This must be configured.** Used for token signing and verification. Failure to configure will prevent the system from working properly.
+
+**Step 3: Configure HOST_HOSTNAME (Required)**
 
 Edit `docker-compose.yml`, find the `HOST_HOSTNAME` environment variable, and set it to your device's **LAN IP** or **hostname**:
 
@@ -146,7 +159,7 @@ environment:
 
 > ⚠️ **This must be configured.** The system uses it to generate the MCP service address and device registration routing. Failure to configure will result in agents being unable to connect properly and devices failing to register.
 
-**Step 3: Start**
+**Step 4: Start**
 
 ```bash
 docker compose up -d

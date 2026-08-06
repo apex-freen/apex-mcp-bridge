@@ -128,14 +128,27 @@ Apex MCP Bridge 提供了：
 
 **步骤 1：准备 docker-compose.yml**
 
-创建项目目录，将本仓库根目录的 `docker-compose.yml` 复制进去：
+创建项目目录，从本仓库的 `deploy-cn/` 目录复制 `docker-compose.yml`：
 
 ```bash
 mkdir -p apex-mcp-bridge && cd apex-mcp-bridge
-# 复制 docker-compose.yml 到当前目录
+# 从仓库 deploy-cn/ 目录复制 docker-compose.yml 到当前目录
 ```
 
-**步骤 2：配置 HOST_HOSTNAME（必需）**
+> 海外用户请使用 `deploy-en/` 目录中的版本。
+
+**步骤 2：配置 JWT_SECRET（必需）**
+
+编辑 `docker-compose.yml`，找到 `JWT_SECRET` 环境变量，设置一个随机密钥：
+
+```yaml
+environment:
+  - JWT_SECRET=your-random-secret-key-here    # 首次启动前必须配置
+```
+
+> ⚠️ **此项必须配置**。用于令牌签发与验证，未配置将导致系统无法正常工作。
+
+**步骤 3：配置 HOST_HOSTNAME（必需）**
 
 编辑 `docker-compose.yml`，找到 `HOST_HOSTNAME` 环境变量，将其值设置为设备的**局域网 IP** 或 **hostname**：
 
@@ -146,7 +159,7 @@ environment:
 
 > ⚠️ **此项必须配置**。系统需要用它来生成 MCP 服务地址和设备注册路由，未配置将导致智能体无法正确连接和设备无法注册。
 
-**步骤 3：启动**
+**步骤 4：启动**
 
 ```bash
 docker compose up -d
