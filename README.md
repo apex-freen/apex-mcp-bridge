@@ -12,16 +12,27 @@
   <img src="https://img.shields.io/badge/MCP-2026.07-6c5ce7?style=flat-square" alt="MCP Protocol">
 </p>
 
+<p align="center">
+  <b>Rust</b> · MCP · MQTT · Docker · Plugin Engine · ESP32
+</p>
+
 # Apex MCP Bridge
 
 > **AI-Native Edge MCP Controller** — The core control layer that bridges AI agents to the physical world.
 
 <p align="center">
-  <kbd>
-    <!-- 🖼️ SCREENSHOT PLACEHOLDER: Admin Dashboard -->
-    <!-- Replace with: <img src="docs/screenshots/dashboard.png" alt="Apex MCP Bridge Admin Dashboard"> -->
-    [Screenshot: Admin Dashboard — to be added]
-  </kbd>
+<table>
+<tr>
+<td align="center"><img src="docs/dashboard.png" width="300"><br>💎 Data Overview</td>
+<td align="center"><img src="docs/operation-audit.png" width="300"><br>📋 Operation Audit</td>
+<td align="center"><img src="docs/authorization-audit.png" width="300"><br>🔐 Authorization Audit</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/token-qrcode.png" width="300"><br>📱 Token QR Code</td>
+<td align="center"><img src="docs/plugin-list.png" width="300"><br>🔌 Plugin Management</td>
+<td align="center"><img src="docs/device-list.png" width="300"><br>🖧 Device Management</td>
+</tr>
+</table>
 </p>
 
 > � **中文文档 (Chinese)**: 完整的中文项目介绍请见 [README_ZH.md](./README_ZH.md) · 详细项目文档 [项目介绍.md](./docs/项目介绍.md)
@@ -34,18 +45,22 @@ Deployed via Docker, it runs on any Docker-capable device (NAS, servers, Raspber
 
 ## 💎 Key Highlights
 
-| 🔐 5-Layer Security | 🎯 1 Unified MCP Entry | 🚀 0 Hardware Dependency |
+| 🎯 Tool Convergence (Save Tokens) | 🔌 Plugin Framework (No Reinventing) | � 5-Layer Security (Zero-Trust) |
 |:---:|:---:|:---:|
-| Token + Permission + TTL + Anti-Bypass + Rate Limit | All devices & services converge, agents see only **1 tool** | Docker on any device — NAS, Pi, Server, PC |
-| What AI can't see, it can never touch | Constant token cost, zero hallucination inflation | Deploy in 3 minutes, no hardware required |
+| N devices + M services → agents see only **1 tool** | Dual open-source frameworks, AI constrained generation | Token + Permission + TTL + Anti-Bypass + Rate Limit |
+| Constant token cost, hallucination risk slashed | Describe needs → get firmware/plugins, skip boilerplate | What AI can't see, it can never touch |
 
-> **One-line pitch**: A safety gate + tool convergence layer that lets AI agents securely control any device and any service — all through a single MCP entry.
+> **One-line pitch**: Tool convergence cuts costs + plugin framework boosts efficiency + zero-trust ensures safety — all through a single MCP entry.
 
 ---
 
 ## 🧠 Core Philosophy: Brain vs. Hand, Zero-Trust Architecture
 
 **In one sentence: Agents think, Bridge acts, Humans authorize.**
+
+> **The essence**: Bridge packages your local device services and network services into a single MCP Server. Users simply scan a QR code to connect their agent, and can then orchestrate data and devices within their authorized scope.
+
+**Example**: You say "I want to listen to music" — the agent first calls a network service to fetch the music file, then calls a device service to play it on the speaker. Fully MCP-native, fully audited.
 
 | Role | Responsibility | Has | Does NOT have |
 |:---:|---|---|---|
@@ -58,6 +73,15 @@ Deployed via Docker, it runs on any Docker-capable device (NAS, servers, Raspber
 ---
 
 ## ✨ Why Apex MCP Bridge
+
+### Value for Developers
+
+| Pain Point | Bridge's Solution |
+|---|---|
+| N devices + M services = N+M MCP tools flooding context, token explosion | **Tool convergence**: all services converge to 1 MCP entry, constant token cost |
+| Rewriting auth, permissions, MQTT stack for every project | **Dual open-source frameworks**: hardware (ESP32-S3/C3) + plugin engine (MIT), framework constraints + AI generation |
+| Worried about AI hallucination causing misoperations | **5-layer security**: unauthorized devices/features are completely invisible to agents |
+| Data compliance concerns (GDPR) | **Pure local architecture**: data never leaves LAN, Rust core for high performance & low footprint |
 
 > AI agents learned to act, but no one installed a **safety gate** for them. Apex MCP Bridge is that gate.
 

@@ -12,16 +12,27 @@
   <img src="https://img.shields.io/badge/MCP-2026.07-6c5ce7?style=flat-square" alt="MCP 协议">
 </p>
 
+<p align="center">
+  <b>Rust</b> · MCP · MQTT · Docker · Plugin Engine · ESP32
+</p>
+
 # Apex MCP Bridge
 
 > **AI 原生边缘 MCP 中控** —— 连接 AI 智能体与物理世界的核心控制层
 
 <p align="center">
-  <kbd>
-    <!-- 🖼️ 截图占位：管理后台仪表盘 -->
-    <!-- 替换为：<img src="docs/screenshots/dashboard.png" alt="Apex MCP Bridge 管理后台"> -->
-    [截图：管理后台仪表盘 — 待补充]
-  </kbd>
+<table>
+<tr>
+<td align="center"><img src="docs/dashboard.png" width="300"><br>� 数据通览</td>
+<td align="center"><img src="docs/operation-audit.png" width="300"><br>📋 操作记录</td>
+<td align="center"><img src="docs/authorization-audit.png" width="300"><br>🔐 授权记录</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/token-qrcode.png" width="300"><br>📱 令牌二维码</td>
+<td align="center"><img src="docs/plugin-list.png" width="300"><br>🔌 插件管理</td>
+<td align="center"><img src="docs/device-list.png" width="300"><br>🖧 设备管理</td>
+</tr>
+</table>
 </p>
 
 > 🌍 **English Documentation**: For English version, see [README.md](./README.md)
@@ -34,18 +45,22 @@
 
 ## 💎 核心亮点
 
-| 🔐 五重安全校验 | 🎯 统一 MCP 入口 | 🚀 零硬件依赖 |
+| 🎯 工具收敛（降 Token） | 🔌 插件框架（免造轮子） | 🔐 五重安全（零信任） |
 |:---:|:---:|:---:|
-| 令牌 + 权限 + 时效 + 防绕过 + 限流 | 所有设备服务汇聚，智能体仅见 **1 个工具** | 任意设备 Docker 部署 —— NAS、树莓派、服务器、PC |
-| AI 看不见的东西，永远碰不到 | Token 消耗恒定，零幻觉膨胀 | 3 分钟部署完成，无需额外硬件 |
+| N 设备 + M 服务 → 智能体仅见 **1 个工具** | 硬件 + 插件双开源框架，AI 约束式生成 | 令牌 + 权限 + 时效 + 防绕过 + 限流 |
+| Token 消耗恒定，幻觉风险大幅降低 | 描述需求即出固件/插件，不用从零搭鉴权 | AI 看不见的东西，永远碰不到 |
 
-> **一句话定位**：一道安全闸门 + 一层工具收敛，让 AI 智能体通过单一 MCP 入口安全地控制任意设备、任意服务。
+> **一句话定位**：工具收敛降成本 + 插件框架提效率 + 零信任保安全，让 AI 智能体通过单一 MCP 入口安全地控制任意设备、任意服务。
 
 ---
 
 ## 🧠 核心理念：大脑与手分离，零信任架构
 
 **一句话理解：智能体负责想，Bridge 负责做，人类负责授权。**
+
+> **本质**：Bridge 把你本地的设备服务和网络服务打包成 1 个 MCP Server，用户只需扫二维码接入智能体，即可在授权范围内联动数据和设备。
+
+**举个例子**：你说"想听音乐"——智能体先调用网络服务拿到音乐文件，再调用设备服务让音响播放。全程 MCP 化，安全可控。
 
 | 角色 | 职责 | 有什么 | 没什么 |
 |:---:|---|---|---|
@@ -58,6 +73,15 @@
 ---
 
 ## ✨ 为什么选择 Apex MCP Bridge
+
+### 给开发者的价值
+
+| 痛点 | Bridge 的解法 |
+|---|---|
+| N 设备 + M 服务 = N+M 个 MCP 工具塞满上下文，Token 爆炸 | **工具收敛**：所有服务汇聚到 1 个 MCP 入口，Token 消耗恒定 |
+| 每个项目都要重写鉴权、权限、MQTT 协议栈 | **双开源框架**：硬件（ESP32-S3/C3）+ 插件引擎（MIT），框架约束 + AI 生成 |
+| 担心 AI 幻觉导致误操作 | **五重安全校验**：无权限的设备/功能对智能体完全不可见 |
+| 数据合规顾虑（GDPR） | **纯本地架构**：数据不出内网，Rust 核心高性能低占用 |
 
 > AI 智能体学会了动手，但没人给它装 **安全闸门**。Apex MCP Bridge 就是这道闸门。
 

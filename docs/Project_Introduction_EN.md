@@ -125,7 +125,14 @@ The system includes the following functional modules:
 | Authorization Audit | Complete record of token creation/modification/revocation |
 | Token Audit | Usage frequency, source IP, and anomaly behavior flags for each token |
 
-🖼️ **SCREENSHOT PLACEHOLDER**: Audit Center main interface (showing audit stats dashboard, operation audit list, authorization audit records, token audit details)
+<p align="center">
+<img src="dashboard.png" width="400" alt="Data Overview"><br>
+<em>Data Overview Dashboard</em><br><br>
+<img src="operation-audit.png" width="400" alt="Operation Audit"><br>
+<em>Operation Audit</em><br><br>
+<img src="authorization-audit.png" width="400" alt="Authorization Audit"><br>
+<em>Authorization Audit</em>
+</p>
 
 #### Admin Panel
 
@@ -138,19 +145,13 @@ The system includes the following functional modules:
 | MCP Token Management | Create/renew/revoke agent access tokens, supports TTL expiry |
 | System Settings | Basic configuration (ports, log levels, HOST_HOSTNAME, etc.) |
 
-🖼️ **SCREENSHOT PLACEHOLDER**: Admin panel login screenshot
+<p align="center"><img src="token-qrcode.png" width="400" alt="Token QR Code"><br><em>Token QR Code — Scan to Connect Agent</em></p>
 
-🖼️ **SCREENSHOT PLACEHOLDER**: User Management interface (showing user list, create user dialog)
+<p align="center"><img src="device-list.png" width="400" alt="Device Management"><br><em>Device Management — IoT Device List & Capability Config</em></p>
 
-🖼️ **SCREENSHOT PLACEHOLDER**: Device Management interface (showing device list, online status, device capability details)
+<p align="center"><img src="plugin-list.png" width="400" alt="Plugin Management"><br><em>Plugin Management — Network Service MCP Enablement</em></p>
 
-🖼️ **SCREENSHOT PLACEHOLDER**: Plugin Management interface (showing installed plugin list, plugin configuration dialog)
-
-🖼️ **SCREENSHOT PLACEHOLDER**: MCP Token Management interface (showing token list, token creation dialog, token permission binding)
-
-🖼️ **SCREENSHOT PLACEHOLDER**: MCP Permission Management interface (showing permission tree, token-permission binding)
-
-🖼️ **SCREENSHOT PLACEHOLDER**: System Settings interface (showing port config, log level, HOST_HOSTNAME parameters)
+<p align="center"><img src="token-qrcode.png" width="400" alt="Token Management"><br><em>MCP Token Management — Creation & Permission Binding</em></p>
 
 > **System logic in one sentence**: First create users, then add devices and plugins (tools), then bind permissions to tokens, agents use tokens to access the MCP endpoint, with full audit trail throughout.
 
