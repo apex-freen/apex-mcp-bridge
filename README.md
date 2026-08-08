@@ -41,6 +41,23 @@
 
 Deployed via Docker, it runs on any Docker-capable device (NAS, servers, Raspberry Pi, PCs) with zero hardware dependency.
 
+<details>
+<summary><b>📋 Table of Contents</b></summary>
+
+- [Key Highlights](#key-highlights) — Tool convergence, plugin framework, 5-layer security
+- [Core Philosophy](#core-philosophy-brain-vs-hand-zero-trust-architecture) — Brain vs. hand, zero-trust
+- [Why Apex MCP Bridge](#why-apex-mcp-bridge) — Value for developers
+- [Architecture](#architecture) — System diagram & data flow
+- [Quick Start](#quick-start) — Docker deployment, config, access
+- [Plugin Installation](#plugin-installation) — MCP-ize network services
+- [Core Features](#core-features) — 5-layer security, tool convergence
+- [Related Projects](#related-projects) — Plugin repo, hardware frameworks
+- [Security Notice](#security-notice) — Passwords, plugins, network
+- [Contributing](#contributing) — How to contribute
+- [FAQ](#faq) — Frequently asked questions
+
+</details>
+
 ---
 
 ## 💎 Key Highlights

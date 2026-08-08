@@ -1,0 +1,45 @@
+# ============== 运行时数据 / Runtime Data ==============
+# Docker Compose 部署后产生的数据目录
+data/
+# 环境变量文件（含密码、密钥，禁止提交）
+.env
+.env.*
+!.env.example
+
+# ============== 日志 / Logs ==============
+*.log
+logs/
+
+# ============== Python / 插件开发 ==============
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.eggs/
+
+# ============== IDE / 编辑器 ==============
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============== Rust / 核心开发 ==============
+target/
+Cargo.lock
+
+# ============== Docker ==============
+# docker-compose.yml 需要提交，不忽略
+# 但本地 override 文件忽略
+docker-compose.override.yml
+
+# ============== 其他 / Misc ==============
+*.bak
+*.tmp
+*.cache
