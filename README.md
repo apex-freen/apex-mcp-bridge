@@ -20,7 +20,7 @@
 
 > **AI-Native Edge MCP Controller** — The core control layer that bridges AI agents to the physical world.
 
-<p align="center">
+<div align="center">
 <table>
 <tr>
 <td align="center"><img src="docs/dashboard.png" width="300"><br>💎 Data Overview</td>
@@ -33,7 +33,7 @@
 <td align="center"><img src="docs/device-list.png" width="300"><br>🖧 Device Management</td>
 </tr>
 </table>
-</p>
+</div>
 
 > � **中文文档 (Chinese)**: 完整的中文项目介绍请见 [README_ZH.md](./README_ZH.md) · 详细项目文档 [项目介绍.md](./docs/项目介绍.md)
 

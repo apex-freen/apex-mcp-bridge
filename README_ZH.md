@@ -20,10 +20,10 @@
 
 > **AI 原生边缘 MCP 中控** —— 连接 AI 智能体与物理世界的核心控制层
 
-<p align="center">
+<div align="center">
 <table>
 <tr>
-<td align="center"><img src="docs/dashboard.png" width="300"><br>� 数据通览</td>
+<td align="center"><img src="docs/dashboard.png" width="300"><br>💎 数据通览</td>
 <td align="center"><img src="docs/operation-audit.png" width="300"><br>📋 操作记录</td>
 <td align="center"><img src="docs/authorization-audit.png" width="300"><br>🔐 授权记录</td>
 </tr>
@@ -33,7 +33,7 @@
 <td align="center"><img src="docs/device-list.png" width="300"><br>🖧 设备管理</td>
 </tr>
 </table>
-</p>
+</div>
 
 > 🌍 **English Documentation**: For English version, see [README.md](./README.md)
 
