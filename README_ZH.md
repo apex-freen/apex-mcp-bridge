@@ -16,6 +16,10 @@
   <b>Rust</b> · MCP · MQTT · Docker · Plugin Engine · ESP32
 </p>
 
+<p align="center">
+  <img src="docs/apex-demo-optimized.gif" alt="Apex MCP Bridge 演示" width="720">
+</p>
+
 # Apex MCP Bridge
 
 > **AI 原生边缘 MCP 中控** —— 连接 AI 智能体与物理世界的核心控制层
